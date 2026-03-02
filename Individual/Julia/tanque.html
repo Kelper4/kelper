@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de prejuízo</title>
+</head>
+<body>
+
+    <p>Especificações: 3 tilápias por m²</p>
+
+    <p>Digite a largura do tanque:</p>
+    <input type="text" id="inp_largura">
+
+    <p>Digite o comprimento do tanque:</p>
+    <input type="text" id="inp_comprimento">
+
+    <p>Digite o preço da tilápia no mercado atual:</p>
+    <input type="text" id="inp_preco">
+
+    <br><br><button onclick="verificarPrejuizo()">Verificar prejuízo</button>
+
+    <div style="color:red" id="div_prejuizo"></div>
+    
+</body>
+</html>
+
+<script>
+
+    function verificarPrejuizo() {
+
+        let largura = Number(inp_largura.value);
+        let comprimento = Number(inp_comprimento.value);
+        let preco = Number(inp_preco.value);
+        let prejuizo = (largura * comprimento) * 3 * preco;
+
+        div_prejuizo.innerHTML = "<br>Ao perder este tanque de peixes para eutrofização, você está tendo um prejuízo de R$" + prejuizo;
+
+    }
+
+</script>
