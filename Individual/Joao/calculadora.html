@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p> largura </p>
+    <input id="ipt_1" type="text">
+
+    <p> cumprimento </p>
+    <input id="ipt_2" type="text">
+    
+    <p> prfundidade </p>
+    <input id="ipt_3" type="text">
+
+    <p> Quantidade de peixe por m</p>
+    <input id="ipt_4" type="text">
+
+    <p> Peso medio do peixe</p>
+    <input id="ipt_5" type="text">
+
+
+    
+    <p></p>
+    <button onclick="ver()"> Analisar risco</button>
+    <span id="span1"></span>
+</body>
+</html>
+<script>
+    function ver(){
+        //Valores
+        let largura = Number(ipt_1.value);
+        let cumprimento = Number(ipt_2.value);
+        let profundidade = Number(ipt_3.value);
+        let densidade = Number(ipt_4.value);
+        let peso = Number(ipt_5.value);
+
+
+        //Calculos
+        let volume = largura * cumprimento * profundidade;
+        let litros = volume * 1000;
+        let total = densidade * litros;
+        let precoGrama = 12.28 / 1000;
+
+        let precoPeixe = precoGrama * peso;
+        let perda = total * precoPeixe;
+
+
+        span1.innerHTML = `COnsiderando um valor de R$ 12,28 por kilo da tilápia, o valor da perda caso venha acontecer a autrofização seria de R$${perda}`;
+
+    }
+</script>
