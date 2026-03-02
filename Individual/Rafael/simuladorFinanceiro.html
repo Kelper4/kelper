@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador financeiro</title>
+</head>
+
+<body style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+    <center>
+        <h1>Simulador financeiro <span style="background-color: green; color: white;">R$</span></h1>
+        <h2 style="color: white; background-color: green;">O quanto você pode estar perdendo sem o monitoramento da luminosidade nos viveiros: </h2>
+
+        <span>Quantidade de viveiros que você possui: </span><br>
+        <input type="text" id="ipt_viveiro">
+        <br><br>
+
+        <span>Quantidade de peixes (tilapias) que cada viveiro possui em média: </span><br>
+        <input type="text" id="ipt_peixe">
+        <br><br>
+
+        <span>Gasto por tanque com ração mensalmente: R$</span><br>
+        <input type="text" id="ipt_racao">
+        <br><br>
+
+        <button onclick="calcular()" style="background-color: green; color: white; width: 8%;">calcular</button>
+        <br><br>
+        <hr>
+        <div id="div_mensagem"></div>
+
+    </center>
+</body>
+
+</html>
+
+<script>
+    function calcular() {
+        let viveiro = Number(ipt_viveiro.value);
+        let peixe = Number(ipt_peixe.value);
+        let racao = Number(ipt_racao.value);
+
+        let kgPeixe = peixe * viveiro * 0.8;
+
+        div_mensagem.innerHTML = `Supondo que cada tilapia pese em média 800g e considerando que
+         o quilo da tilapia varia em torno R$12, Você pode chegar a perder 
+         <h1 style="background-color: red; color: white;">R$${(kgPeixe * 12).toFixed(2)} com a perda dos peixes</h1><hr>`;
+
+        div_mensagem.innerHTML += `Para uma tilapia chegar a fase adulta ela leva em torno de 6 a 7 meses. Se você gasta R$${racao}
+          por viveiro mensalmente, durante os 7 meses que o peixe demora para chegar a idade adulta você irá gastar 
+          <h1 style="background-color: red; color: white;">R$${(racao * viveiro * 7).toFixed(2)} com a alimentação dos peixes</h1><hr>`;
+
+        div_mensagem.innerHTML += `<h1 style="background-color: red; color: white;">TOTAL DE PERDAS = R$${((kgPeixe * 12) + (racao * viveiro * 7)).toFixed(2)}</h1>`;
+    }
+</script>
