@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Arraçoamento</title>
+</head>
+<body style="font-family: Arial, Helvetica, sans-serif; background-color: aliceblue;">
+    <center>
+        <h1>Simulador Financeiro de Custos:</h1>
+        <br><br>
+
+        <img src="img/tabela.png" alt="Imagem que descreve a taxa de acordo com o peso do peixe de ração">
+        <br><br>
+
+        <span>Insira a quantidade de Peixes no viveiro:</span>
+        <input type="text" id="ipt_qtPeixe">
+        <br><br>
+
+        <span>Insira o peso médio do Peixe:</span>
+        <input type="text" id="ipt_pesoMedio">
+        <br><br>
+
+        <button onclick="calcularPrejuizo()">Calcular</button>
+        <br><br>
+
+    
+
+        <div id="exibirQtRacao"></div>
+
+        <div id="exibirValor"></div>
+
+        <div id="exibir_riscoMorte"></div>
+        
+    </center>
+    
+</body>
+</html>
+
+<script>
+    function calcularPrejuizo(){
+        exibirValor.innerHTML = "";
+        exibir_riscoMorte.innerHTML = "";
+
+        let peso_medio = Number(ipt_pesoMedio.value);
+        let quantidade_peixe = Number(ipt_qtPeixe.value);
+
+        let taxa = 0;
+
+        if(peso_medio <= 50){
+            taxa =  0.0425;
+        }else if(peso_medio <=150){
+            taxa = 0.035;
+        }else if(peso_medio <= 250){
+            taxa =  0.03;
+        }else if(peso_medio <=350){
+            taxa = 0.025;
+        }else if(peso_medio <=700){
+            taxa =  0.02;
+         }else if(peso_medio <=1000){
+            taxa =  0.015;
+         }else{
+            taxa =  0.013;
+         }
+
+         peso_medio = peso_medio / 1000;
+         let resultado = (quantidade_peixe * peso_medio) * taxa;
+
+
+         exibirQtRacao.innerHTML = "A quantidade de ração gasta diariamente com "+quantidade_peixe+" peixes e com o peso médio de "+peso_medio+"kg é "+resultado.toFixed
+         (2)+"Kg <br><br>";
+
+         let valorPago = resultado * 8;
+
+         exibirValor.innerHTML += "Suponhamos que o valor do Kilo de Ração da Tilápia seja R$8,00 <br><br>";
+         exibirValor.innerHTML += "<span style='background-color: #E6007E; color: white;'><b>O valor pago somente em Ração gasto nesse dia seria R$"+valorPago.toFixed(2)+"<b><span><br><br>";
+
+         let valorPagoMensal = valorPago * 30;
+         exibirValor.innerHTML += "<span style='background-color: #E6007E; color: white;'><b>Se colocarmos mensalmente por 30 dias, o gasto foi de R$"+valorPagoMensal.toFixed(2)+"<b></span><br><br>";
+
+         let prejuizo = valorPagoMensal * 15;
+         
+
+         exibir_riscoMorte.innerHTML += "Cálculo do Prejuízo: <br>";
+         exibir_riscoMorte.innerHTML += "Suponhamos que o preço médio do Kilo da Tilapia esteja R$15,00<br>";
+         exibir_riscoMorte.innerHTML += "<span style='background-color: #E6007E; color: white;'><b> O valor do Prejuízo Financeiro Mensal seria R$"+prejuizo.toFixed(2)+"<b></span>";
+    
+    }
+</script>
