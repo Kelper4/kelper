@@ -272,7 +272,7 @@
 
         // biomassa = capacidade de suporte, em (kg/m²) ou (kg/ha)
         let biomassaHa = pesoTotal / hectares;              // biomassa de peixes no viveiro, em ha
-        let racaoHa = racaoKg / hectares;                   // ração por hectare no viveiro
+        let racaoHa = racaoKg * hectares;                   // ração por hectare no viveiro
 
         // Fator 1: Excesso de Biomassa
         /*
@@ -361,7 +361,7 @@
             <hr>
             <p>Densidade: <span>${densidade.toFixed(2)}</span> peixes/m²</p>
             <p>Biomassa: <span>${biomassaHa.toFixed(2)}</span> kg/ha</p>
-            <p>Carga de Ração: <span>${racaoHa.toFixed(2)}</span>  kg/ha/dia</p>
+            <p>Carga de Ração: <span>${racaoHa}</span>  kg/ha/dia</p>
             <hr>
             <p>Chance de Eutrofização: <span>${(risco * 100)}%</span></p>
             <p>Valor Total em Risco: <span>R$ ${valorPrejuizo.toFixed(2)}</span></p>
