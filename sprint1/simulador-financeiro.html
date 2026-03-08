@@ -198,10 +198,10 @@
                             <span>Peso Médio/Peixe (g)</span>
                             <input id="inPeso" type="number" min="0" name="peso">
                         </div>
-                        <div class="field">
+                        <!-- <div class="field">
                             <span>Quantidade de Ração/dia (Kg)</span>
                             <input id="inRacao" type="number" min="0" name="racao">
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             
@@ -209,8 +209,12 @@
                     <h3>• Outros</h3>
                     <div class="field-group">
                         <div class="field">
-                            <span>Preço Tilápia (R$)</span>
-                            <input id="inPreco" type="number" min="0" name="preco-tilapia">
+                            <span>Preço da Tilápia (Kg)</span>
+                            <input id="inPrecoPeixe" type="number" min="0" name="preco-tilapia">
+                        </div>
+                        <div class="field">
+                            <span>Preço da Ração (Kg)</span>
+                            <input id="inPrecoRacao" type="number" min="0" name="preco-racao">
                         </div>
                         <div class="field">
                             <span>Quantidade de Viveiros</span>
@@ -246,18 +250,38 @@
         let comprimento = Number(inComprimento.value);      // comprimento do viveiro, em metros
         let profundidade = Number(inProfundidade.value);    // profundidade do viveiro, em metros
 
+
         let qtdPeixes = Number(inPeixes.value);             // quantidade de peixes por viveiro
         let qtdViveiros = Number(inViveiros.value);         // quantidade de viveiros considerados
 
         let pesoKg = Number(inPeso.value)/ 1000;            // peso médio dos peixes, em kg
-        let racaoKg = Number(inRacao.value);                // ração/dia por viveiro
+        // let racaoKg = Number(inRacao.value);                // ração/dia por viveiro
 
-        let precoTilapia = Number(inPreco.value);           // preço atual da tilápia
+        let precoPeixe = Number(inPrecoPeixe.value);        // preço do quilo do peixe
+        let precoRacao = Number(inPrecoRacao.value);        // preço do quilo da ração
         let precoBaseKelper = 500;                          // preço base do Kelper (arbitrário)
         
         // === Cálculos === //
         let risco = 0;                                      // risco base de eutrofização
         let limBiomassaHa = 10000;                          // limite saudável de biomassa por hectare
+        let taxaArracoamento = 0;                           // taxa de arraçoamento
+        
+        // Cálculo da Taxa de Arraçoamento com base em valores da EMBRAPA
+        if(pesoKg <= 0.05){                                       
+            taxaArracoamento =  0.0425;
+        }else if(pesoKg <= 0.15){
+            taxaArracoamento = 0.035;
+        }else if(pesoKg <= 0.25){
+            taxaArracoamento =  0.03;
+        }else if(pesoKg <= 0.35){
+            taxaArracoamento = 0.025;
+        }else if(pesoKg <= 0.7){
+            taxaArracoamento =  0.02;
+         }else if(pesoKg <= 1){
+            taxaArracoamento =  0.015;
+         }else {
+            taxaArracoamento =  0.013;
+         }
 
         let area = largura * comprimento;                   // area do viveiro, em m²
 
@@ -271,7 +295,9 @@
 
         // biomassa = capacidade de suporte, em (kg/m²) ou (kg/ha)
         let biomassaHa = pesoTotal / hectares;              // biomassa de peixes no viveiro, em ha
-        let racaoHa = racaoKg * hectares;                   // ração por hectare no viveiro
+
+        let racaoDiaria = pesoTotal * taxaArracoamento;                 // estimativa da qtd de ração diaria por viveiro, considerando a taxa de arraçoamento.
+        let racaoHa = racaoDiaria / hectares;               // ração por hectare no viveiro
 
         // Fator 1: Excesso de Biomassa
         /*
@@ -340,13 +366,16 @@
 
         // Estimativa Financeira:
         // o valor que o viveiro representa para o piscicultor, em R$
-        let valorTotal = pesoTotal * precoTilapia * qtdViveiros;    
+        let valorLote = pesoTotal * precoPeixe * qtdViveiros;    
+
+        // o valor gasto em ração em todos os viveiros
+        let custoRacao = racaoDiaria * precoRacao * qtdViveiros; 
 
         // o valor do prejuízo sobre a perda dos peixes naquele viveiro, baseado no risco calculado acima
         // ex: valorTotal       = R$ 1.000,00
         //     risco            = 0.50 (50%)
         //     valorPrejuizo    = R$ 500,00 (pois foi considerado que 50% dos peixes naquele viveiro morreram, portanto 50% do valor daquele viveiro foi perdido) 
-        let valorPrejuizo = valorTotal * risco;
+        let valorPrejuizo = (valorLote + custoRacao) * risco;
 
         // investimento total do sistema Kelper para instalar em todos os viveiros, em R$
         let investimentoKelper = precoBaseKelper * qtdViveiros;
@@ -371,12 +400,14 @@
     }
 
     function limpar() {
+        inResponse.innerHTML = '';
+
         inLargura.value = "";
         inComprimento.value = "";
         inProfundidade.value = "";
         inPeixes.value = "";
         inViveiros.value = "";
-        inRacao.value = "";
+        // inRacao.value = "";
         inPeso.value = "";
         inPreco.value = "";
         inResponse.innerHTML = "";
